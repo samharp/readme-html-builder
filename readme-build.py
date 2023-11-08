@@ -1,20 +1,25 @@
-import markdown
+import os, fileinput, markdown
 
 # read markdown file
 with open('README.md', 'r') as f:
-  tempMD = f.read()
+  readmeMarkdown = f.read()
 
 # read destination html file
 with open('index.html', 'r') as f:
-  destHTML = f.readlines()
+  destinationLines = f.readlines()
+  for line in destinationLines:
+    # check if marker exists
+    if line.find('data-readme-insert') != -1:
+      insertTarget = destinationLines.index(line) + 2
+      break;
 
 # turn the markdown into html
-tempHTML = markdown.markdown(tempMD)
+readmeHTML = markdown.markdown(readmeMarkdown)
 
 # insert rendered HTML into destination
-destHTML.insert(11, tempHTML)
+destinationLines.insert(insertTarget, readmeHTML)
 
 # write to destination html file
 with open('index.html', 'w') as f:
-  destHTML = "".join(destHTML)
-  f.write(destHTML)
+  destinationLines = "".join(destinationLines)
+  f.write(destinationLines)
