@@ -1,6 +1,7 @@
 import markdown
 
 # create initial variable values
+targetFile = "index.html"
 targetType = "section"
 targetSel = "</" + targetType
 beginTarget, endTarget = 0, 0
@@ -10,7 +11,7 @@ with open('README.md', 'r', encoding="utf8") as f:
   readmeMarkdown = f.read()
 
 # read destination html file
-with open('index.html', 'r', encoding="utf8") as f:
+with open(targetFile, 'r', encoding="utf8") as f:
   destinationLines = f.readlines()
   for line in destinationLines:
     # check if readme section exists & where it ends
@@ -39,6 +40,7 @@ readmeHTML = markdown.markdown(readmeMarkdown, extensions = ['fenced_code'], tab
 destinationLines.insert(beginTarget, readmeHTML)
 
 # write to destination html file
-with open('index.html', 'w', encoding="utf8") as f:
+with open(targetFile, 'w', encoding="utf8") as f:
   destinationLines = "".join(destinationLines)
   f.write(destinationLines)
+  print("README content copied into " + targetFile)
